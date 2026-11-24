@@ -1,4 +1,10 @@
 
+import {
+    obtenerCarrito,
+    guardarCarrito,
+    vaciarCarrito
+} from './carrito-storage.js';
+
 // Obtener los elementos del HTML
 const contenedorCarrito = document.getElementById('contenedor-carrito');
 const totalCarrito = document.getElementById('total-carrito');
@@ -7,6 +13,7 @@ const totalCarrito = document.getElementById('total-carrito');
 const mensajeCarrito = document.createElement('p');
 mensajeCarrito.classList.add('mensaje-carrito');
 totalCarrito.insertAdjacentElement('afterend', mensajeCarrito);
+
 // Crear confirmación para vaciar el carrito
 const confirmacionVaciado = document.createElement('div');
 confirmacionVaciado.classList.add('confirmacion-vaciado');
@@ -18,6 +25,7 @@ confirmacionVaciado.innerHTML =
     '<button id="cancelar-vaciado">Conservar carrito</button>';
 
 mensajeCarrito.insertAdjacentElement('afterend', confirmacionVaciado);
+
 // Crear confirmación de compra
 const confirmacionCompra = document.createElement('div');
 confirmacionCompra.classList.add('confirmacion-compra');
@@ -33,18 +41,6 @@ confirmacionVaciado.insertAdjacentElement('afterend', confirmacionCompra);
 // Mostrar mensajes en la página
 function mostrarMensaje(texto) {
     mensajeCarrito.textContent = texto;
-}
-
-// Obtener los productos guardados
-function obtenerCarrito() {
-
-    try {
-        return JSON.parse(localStorage.getItem('carrito')) || [];
-    } catch (error) {
-        console.error('Error al obtener el carrito:', error);
-        return [];
-    }
-
 }
 
 // Mostrar los productos del carrito
@@ -133,7 +129,7 @@ contenedorCarrito.addEventListener('click', (e) => {
     }
 
     // Guardar los cambios
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+    guardarCarrito(carrito);
 
     mostrarMensaje('');
 
@@ -162,7 +158,7 @@ confirmacionVaciado.addEventListener('click', (e) => {
 
     if (e.target.id === 'aceptar-vaciado') {
 
-        localStorage.removeItem('carrito');
+        vaciarCarrito();
 
         mostrarCarrito();
 
@@ -229,7 +225,7 @@ confirmacionCompra.addEventListener('click', (e) => {
 
     if (e.target.id === 'aceptar-compra') {
 
-        localStorage.removeItem('carrito');
+        vaciarCarrito();
 
         mostrarCarrito();
 

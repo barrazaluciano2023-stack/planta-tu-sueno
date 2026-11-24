@@ -1,8 +1,12 @@
 
+import {
+    obtenerCarrito,
+    guardarCarrito
+} from './carrito-storage.js';
+
 const contenedor = document.getElementById('contenedor-productos');
 
 const botonesCategorias = document.querySelectorAll('[data-categoria]');
-
 
 let productos = [];
 
@@ -10,7 +14,7 @@ function mostrarProductos(listaProductos) {
 
     let contenido = '';
 
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    let carrito = obtenerCarrito();
 
     listaProductos.forEach(producto => {
 
@@ -26,7 +30,7 @@ function mostrarProductos(listaProductos) {
                 '<button class="agregar-carrito ' + (productoAgregado ? 'producto-agregado' : '') + '" data-id="' + producto.id + '" ' + (productoAgregado ? 'disabled' : '') + '>' +
                     (productoAgregado ? '✓ Agregado' : '+') +
                 '</button>' +
-                (productoAgregado ? '<p class="texto-agregado">Podés agregar mas desde el carrito.</p>' : '') +
+                (productoAgregado ? '<p class="texto-agregado">Podés modificar la cantidad desde el carrito.</p>' : '') +
             '</article>';
 
     });
@@ -35,7 +39,7 @@ function mostrarProductos(listaProductos) {
 
 }
 
-//json
+// Cargar productos desde el archivo JSON
 async function cargarProductos() {
 
     try {
@@ -76,7 +80,7 @@ contenedor.addEventListener('click', (e) => {
             producto.id === idProducto
         );
 
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        let carrito = obtenerCarrito();
 
         const productoEnCarrito = carrito.find(producto =>
             producto.id === idProducto
@@ -95,7 +99,7 @@ contenedor.addEventListener('click', (e) => {
 
         }
 
-        localStorage.setItem('carrito', JSON.stringify(carrito));
+        guardarCarrito(carrito);
 
         e.target.textContent = '✓ Agregado';
         e.target.classList.add('producto-agregado');

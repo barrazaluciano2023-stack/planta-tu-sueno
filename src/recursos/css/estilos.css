@@ -654,3 +654,11 @@ main {
 .confirmacion-compra button:hover {
     transform: scale(1.04);
 }
+.contacto h2 {
+    text-align: center;
+}
+
+.contacto form {
+    max-width: 600px;
+    margin: 0 auto;
+}
